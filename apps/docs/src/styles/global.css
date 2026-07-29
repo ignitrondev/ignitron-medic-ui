@@ -816,7 +816,10 @@ body.sidebar-collapsed .docs-sidebar {
 .demo-output {
   display: grid;
   grid-template-columns: 160px minmax(0, 1fr);
-  max-height: 310px;
+  grid-template-rows: minmax(0, 1fr);
+  height: 280px;
+  min-height: 0;
+  overflow: hidden;
   border-top: 1px solid var(--line);
   background: var(--code-bg);
 }
@@ -838,6 +841,8 @@ body.sidebar-collapsed .docs-sidebar {
 }
 
 .demo-output pre {
+  min-width: 0;
+  min-height: 0;
   margin: 0;
   overflow: auto;
   padding: 20px 24px;
@@ -1022,7 +1027,7 @@ body.sidebar-collapsed .docs-sidebar {
   .demo-toolbar label { border-right: 0; border-bottom: 1px solid var(--line); }
   .demo-toolbar button { grid-column: 1; border-top: 0; }
   .docs-live-demo { padding: 10px; }
-  .demo-output { grid-template-columns: 1fr; }
+  .demo-output { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); height: 320px; }
   .demo-output > div { flex-direction: row; justify-content: space-between; border-right: 0; border-bottom: 1px solid var(--line); }
   .safety-section { grid-template-columns: 1fr; gap: 24px; }
   .safety-index { width: 64px; height: 64px; }

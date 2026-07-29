@@ -63,7 +63,7 @@ The package performs no network requests. Authentication, authorization, persist
 
 ## Release status
 
-The initial package version is `0.1.0-alpha.0`. Releases use Changesets, semantic
+The package is currently released on the `alpha` channel. Releases use Changesets, semantic
 versioning, and npm trusted publishing. See [CONTRIBUTING.md](./CONTRIBUTING.md)
 and [docs/releasing.md](./docs/releasing.md).
 

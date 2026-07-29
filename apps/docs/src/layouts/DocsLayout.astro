@@ -101,6 +101,8 @@ const { title, description } = Astro.props;
       });
 
       const navigationLinks = Array.from(sidebar?.querySelectorAll<HTMLAnchorElement>('a[href^="#"]') ?? []);
+      const breadcrumbGroup = document.querySelector<HTMLElement>('[data-breadcrumb-group]:not(a)');
+      const breadcrumbPage = document.querySelector<HTMLElement>('[data-breadcrumb-page]');
       const sections = navigationLinks
         .map((link) => document.querySelector<HTMLElement>(link.hash))
         .filter((section): section is HTMLElement => section !== null);
@@ -109,8 +111,11 @@ const { title, description } = Astro.props;
         navigationLinks.forEach((link) => {
           const active = link.hash === `#${id}`;
           link.classList.toggle('active', active);
-          if (active) link.setAttribute('aria-current', 'location');
-          else link.removeAttribute('aria-current');
+          if (active) {
+            link.setAttribute('aria-current', 'location');
+            if (breadcrumbGroup) breadcrumbGroup.textContent = link.dataset.breadcrumbGroup ?? '';
+            if (breadcrumbPage) breadcrumbPage.textContent = link.dataset.breadcrumbLabel ?? '';
+          } else link.removeAttribute('aria-current');
         });
       }
 

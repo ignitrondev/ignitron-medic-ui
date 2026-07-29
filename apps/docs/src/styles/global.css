@@ -299,7 +299,7 @@ body.sidebar-collapsed .docs-sidebar {
   letter-spacing: 0.16em;
 }
 
-.docs-sidebar nav p:first-child {
+.sidebar-group:first-child p {
   margin-top: 0;
 }
 
@@ -367,9 +367,9 @@ body.sidebar-collapsed .docs-sidebar {
 .docs-hero,
 .doc-section,
 .docs-footer {
-  width: min(100%, 1180px);
-  margin-inline: auto;
-  padding-inline: clamp(32px, 6vw, 92px);
+  width: 100%;
+  margin: 0;
+  padding-inline: clamp(32px, 4.5vw, 72px);
 }
 
 .docs-hero {
@@ -421,6 +421,32 @@ body.sidebar-collapsed .docs-sidebar {
   color: var(--dim);
   font: 500 9px var(--mono);
   letter-spacing: 0.1em;
+}
+
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breadcrumbs li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.breadcrumbs li + li::before {
+  color: var(--faint);
+  content: '/';
+}
+
+.breadcrumbs a:hover,
+.breadcrumbs li[aria-current='page'] {
+  color: var(--text);
 }
 
 .overview-status {
@@ -693,18 +719,19 @@ body.sidebar-collapsed .docs-sidebar {
 .demo-section {
   width: 100%;
   max-width: none;
-  padding-inline: clamp(24px, 4vw, 58px);
+  padding-inline: clamp(32px, 4.5vw, 72px);
   background: var(--surface);
 }
 
 .demo-section > .section-heading {
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .demo-shell {
-  max-width: 1180px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
   border: 1px solid var(--line-strong);
   background: var(--space);
 }
@@ -991,8 +1018,6 @@ body.sidebar-collapsed .docs-sidebar {
   .install-command { grid-template-columns: 1fr auto; }
   .install-command > div { display: none; }
   .component-intro { grid-template-columns: 1fr; gap: 24px; }
-  .demo-section { padding-inline: 12px; }
-  .demo-section > .section-heading { padding-inline: 10px; }
   .demo-toolbar { grid-template-columns: 1fr; }
   .demo-toolbar label { border-right: 0; border-bottom: 1px solid var(--line); }
   .demo-toolbar button { grid-column: 1; border-top: 0; }

@@ -1,0 +1,78 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#09090b" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Ignitron Clinical UI documentation home">
+        <span class="brand-mark"><img src="/images/ignitron.png" alt="" /></span>
+        <span class="brand-copy">
+          <b>Ignitron<span>Dev</span></b>
+          <small>CLINICAL UI / DOCS</small>
+        </span>
+      </a>
+
+      <div class="topbar-actions">
+        <span class="release"><i></i> ALPHA 0.1</span>
+        <a href="https://github.com/ignitrondev/ignitron-medic-ui" target="_blank" rel="noreferrer">
+          GitHub
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg>
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Toggle documentation menu" aria-expanded="false">
+          <span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <slot />
+
+    <script>
+      const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+      const sidebar = document.querySelector<HTMLElement>('.docs-sidebar');
+
+      toggle?.addEventListener('click', () => {
+        const isOpen = sidebar?.classList.toggle('is-open') ?? false;
+        toggle.setAttribute('aria-expanded', String(isOpen));
+      });
+
+      sidebar?.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+          sidebar.classList.remove('is-open');
+          toggle?.setAttribute('aria-expanded', 'false');
+        });
+      });
+
+      document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const value = button.dataset.copy;
+          if (!value) return;
+          await navigator.clipboard.writeText(value);
+          const previous = button.textContent;
+          button.textContent = 'Copied';
+          window.setTimeout(() => { button.textContent = previous; }, 1400);
+        });
+      });
+    </script>
+  </body>
+</html>

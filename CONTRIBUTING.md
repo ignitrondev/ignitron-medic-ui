@@ -3,7 +3,7 @@
 ## Workflow
 
 1. Create or update tests for the domain behavior.
-2. Add Storybook stories for every new visual or interaction state.
+2. Add interactive documentation examples for every new visual or interaction state.
 3. Run `pnpm typecheck`, `pnpm lint`, `pnpm test`, and `pnpm build`.
 4. Add a Changeset for a change that affects the public package.
 5. Request both engineering and domain review for clinical behavior changes.

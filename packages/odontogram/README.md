@@ -33,4 +33,4 @@ Domain helpers can be imported without loading the React client entry point:
 import { formatToothNumber, validateOdontogramValue } from '@ignitrondev/odontogram/core';
 ```
 
-See the repository Storybook for interactive examples.
+See the repository documentation site for interactive examples.

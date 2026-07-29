@@ -1,0 +1,191 @@
+---
+import { OdontogramDemo } from '../components/OdontogramDemo';
+import DocsLayout from '../layouts/DocsLayout.astro';
+
+const installCommand = 'pnpm add @ignitrondev/odontogram';
+
+const props = [
+  ['value', 'OdontogramValue', 'Required', 'Structured, controlled clinical value.'],
+  ['onChange', '(value, event) => void', 'Optional', 'Receives the next value and domain event.'],
+  ['conditions', 'OdontogramCondition[]', 'Required', 'Terminology, symbols, and visual accents.'],
+  ['numberingSystem', 'FDI | UNIVERSAL | PALMER', 'FDI', 'Visible tooth numbering convention.'],
+  ['dentition', 'PRIMARY | PERMANENT | MIXED', 'PERMANENT', 'Dentition rendered by the chart.'],
+  ['mode', 'edit | readOnly | print', 'edit', 'Interaction and output mode.'],
+];
+---
+
+<DocsLayout
+  title="Ignitron Clinical UI Docs — React Odontogram"
+  description="Documentation and interactive examples for Ignitron Clinical UI components, starting with a configurable React odontogram."
+>
+  <div class="docs-grid">
+    <aside class="docs-sidebar" aria-label="Documentation navigation">
+      <nav>
+        <p>GET STARTED</p>
+        <a class="active" href="#overview"><span>01</span>Overview</a>
+        <a href="#installation"><span>02</span>Installation</a>
+
+        <p>COMPONENTS</p>
+        <a href="#odontogram"><span>03</span>Odontogram</a>
+        <a href="#live-demo"><span>04</span>Interactive demo</a>
+
+        <p>REFERENCE</p>
+        <a href="#api"><span>05</span>React API</a>
+        <a href="#data-contract"><span>06</span>Data contract</a>
+        <a href="#safety"><span>07</span>Clinical safety</a>
+      </nav>
+
+      <div class="sidebar-status">
+        <span><i></i> CURRENT RELEASE</span>
+        <b>0.1.0-alpha.0</b>
+        <small>API may change before validation.</small>
+      </div>
+    </aside>
+
+    <main class="docs-content">
+      <section class="docs-hero" id="overview">
+        <div class="grid-field" aria-hidden="true"></div>
+        <div class="section-kicker"><span>01</span> CLINICAL UI INFRASTRUCTURE</div>
+        <h1>Interfaces for care.<br /><em>Contracts for code.</em></h1>
+        <p>
+          Backend-agnostic React components for specialist healthcare workflows. Explicit data,
+          configurable clinical terminology, and predictable states—starting with odontogram.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="#installation">Start building</a>
+          <a class="button secondary" href="#live-demo">Open live demo</a>
+        </div>
+        <div class="hero-signals">
+          <span><b>01</b> No network requests</span>
+          <span><b>02</b> Controlled React API</span>
+          <span><b>03</b> TypeScript contracts</span>
+          <span><b>04</b> Accessible states</span>
+        </div>
+      </section>
+
+      <section class="doc-section" id="installation">
+        <header class="section-heading">
+          <span>INSTALLATION</span>
+          <h2>Start with one package.</h2>
+          <p>The package owns rendering and domain values. Your application keeps authentication, storage, audit history, and signatures.</p>
+        </header>
+
+        <div class="install-command">
+          <div><i></i><span>TERMINAL</span></div>
+          <code><b>$</b> {installCommand}</code>
+          <button type="button" data-copy={installCommand}>Copy</button>
+        </div>
+
+        <div class="requirements-grid">
+          <article><span>RUNTIME</span><b>React 18 or 19</b><p>Distributed as an ESM package with React as a peer dependency.</p></article>
+          <article><span>LANGUAGE</span><b>TypeScript first</b><p>Domain models and component contracts ship with generated declarations.</p></article>
+          <article><span>BACKEND</span><b>Bring your own</b><p>No hidden persistence, identity provider, or proprietary API requirement.</p></article>
+        </div>
+      </section>
+
+      <section class="doc-section" id="odontogram">
+        <header class="section-heading split-heading">
+          <div>
+            <span>COMPONENT / 01</span>
+            <h2>Odontogram</h2>
+          </div>
+          <div class="component-meta">
+            <span><i></i> IN DEVELOPMENT</span>
+            <span>REACT</span>
+            <span>0.1.0-ALPHA</span>
+          </div>
+        </header>
+
+        <div class="component-intro">
+          <p>A controlled dental chart for whole-tooth findings across permanent, primary, and mixed dentition.</p>
+          <div>
+            <span>FDI numbering</span><span>Universal numbering</span><span>Palmer notation</span>
+            <span>Edit / read-only / print</span>
+          </div>
+        </div>
+
+        <div class="code-window">
+          <header><span>Assessment.tsx</span><span>React + TypeScript</span></header>
+          <pre><code><span class="syntax-purple">&lt;Odontogram</span>
+  <span class="syntax-blue">value</span>={'{value}'}
+  <span class="syntax-blue">onChange</span>={'{setValue}'}
+  <span class="syntax-blue">numberingSystem</span>=<span class="syntax-green">"FDI"</span>
+  <span class="syntax-blue">dentition</span>=<span class="syntax-green">"PERMANENT"</span>
+  <span class="syntax-blue">conditions</span>={'{conditions}'}
+<span class="syntax-purple">/&gt;</span></code></pre>
+          <footer><i></i> Value stays in your application</footer>
+        </div>
+      </section>
+
+      <section class="doc-section demo-section" id="live-demo">
+        <header class="section-heading">
+          <span>INTERACTIVE DEMO</span>
+          <h2>Test the contract, not a screenshot.</h2>
+          <p>Choose a finding, select teeth, switch numbering systems, and inspect the structured value emitted by the component.</p>
+        </header>
+        <OdontogramDemo client:load />
+      </section>
+
+      <section class="doc-section" id="api">
+        <header class="section-heading">
+          <span>REACT API</span>
+          <h2>Small surface. Explicit ownership.</h2>
+        </header>
+
+        <div class="api-table-wrap">
+          <table class="api-table">
+            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              {props.map(([name, type, defaultValue, description]) => (
+                <tr><td><code>{name}</code></td><td><code>{type}</code></td><td>{defaultValue}</td><td>{description}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="doc-section" id="data-contract">
+        <header class="section-heading">
+          <span>DATA CONTRACT</span>
+          <h2>The visual is not the record.</h2>
+          <p>Every mark shown in the chart is derived from a serializable clinical value. Colors and paths never become the source of truth.</p>
+        </header>
+
+        <div class="contract-grid">
+          <div class="code-window compact">
+            <header><span>OdontogramValue</span><span>schemaVersion: 1</span></header>
+            <pre><code><span class="syntax-purple">type</span> OdontogramValue = {'{'}
+  schemaVersion: <span class="syntax-green">1</span>;
+  findings: {'{'}
+    id: <span class="syntax-blue">string</span>;
+    toothId: CanonicalToothId;
+    conditionCode: <span class="syntax-blue">string</span>;
+    surface?: ToothSurface;
+    note?: <span class="syntax-blue">string</span>;
+  {'}'}[];
+{'}'};</code></pre>
+          </div>
+          <div class="contract-points">
+            <article><b>Canonical identity</b><p>Tooth IDs do not change when the visible numbering convention changes.</p></article>
+            <article><b>Clinical codes</b><p>Findings persist a condition code, never a presentation color alone.</p></article>
+            <article><b>Versioned schema</b><p>Stored values declare their contract version for future migrations.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="doc-section safety-section" id="safety">
+        <div class="safety-index">!</div>
+        <div>
+          <span>CLINICAL SAFETY</span>
+          <h2>Early software. Human review required.</h2>
+          <p>This alpha package has not completed clinical validation. It is not a medical device and must not replace clinical review, organizational policy, or integration testing.</p>
+        </div>
+      </section>
+
+      <footer class="docs-footer">
+        <div><b>Ignitron<span>Dev</span></b><small>Clinical UI infrastructure</small></div>
+        <p>Built for safer clinical software · 2026</p>
+      </footer>
+    </main>
+  </div>
+</DocsLayout>

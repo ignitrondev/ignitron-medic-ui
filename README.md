@@ -10,7 +10,7 @@ The first package is **Ignitron Odontogram**.
 
 ```text
 apps/
-├── docs/          Storybook documentation and component states
+├── docs/          Branded Astro documentation and interactive examples
 └── playground/    Integration playground with visible JSON output
 
 packages/
@@ -29,6 +29,9 @@ pnpm install
 pnpm docs
 pnpm playground
 ```
+
+The documentation is a static Astro site. For Cloudflare Pages, use `pnpm docs:build`
+as the build command and `apps/docs/dist` as the output directory.
 
 Run all quality checks:
 

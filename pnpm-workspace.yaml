@@ -1,0 +1,13 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+allowBuilds:
+  esbuild: true
+
+catalog:
+  react: ^19.2.0
+  react-dom: ^19.2.8
+
+onlyBuiltDependencies:
+  - esbuild

@@ -1,0 +1,33 @@
+{
+  "name": "ignitron-clinical-ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.10.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "pnpm --filter @ignitrondev/odontogram build && pnpm --filter @ignitrondev/docs build && pnpm --filter @ignitrondev/playground build",
+    "build:package": "pnpm --filter @ignitrondev/odontogram build",
+    "docs": "pnpm --filter @ignitrondev/docs dev",
+    "docs:build": "pnpm --filter @ignitrondev/docs build",
+    "playground": "pnpm --filter @ignitrondev/playground dev",
+    "test": "pnpm --filter @ignitrondev/odontogram test",
+    "test:watch": "pnpm --filter @ignitrondev/odontogram test:watch",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "eslint .",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build && pnpm test && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.31.1",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.1.2",
+    "eslint": "^10.8.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.65.0"
+  }
+}

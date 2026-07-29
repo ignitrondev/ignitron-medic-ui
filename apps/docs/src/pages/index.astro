@@ -2,7 +2,7 @@
 import { OdontogramDemo } from '../components/OdontogramDemo';
 import DocsLayout from '../layouts/DocsLayout.astro';
 
-const installCommand = 'pnpm add @ignitrondev/odontogram';
+const installCommand = 'npm install @ignitrondev/odontogram@alpha';
 
 interface NavigationItem {
   id: string;
@@ -54,8 +54,8 @@ const props = [
 ---
 
 <DocsLayout
-  title="Ignitron Clinical UI Docs — React Odontogram"
-  description="Documentation and interactive examples for Ignitron Clinical UI components, starting with a configurable React odontogram."
+  title="Ignitron Clinical UI — React Components for Clinical Software"
+  description="Open-source React clinical UI components with explicit data contracts, starting with a configurable odontogram for dental charting."
 >
   <div class="docs-grid">
     <aside class="docs-sidebar" aria-label="Documentation navigation">
@@ -80,7 +80,7 @@ const props = [
 
       <div class="sidebar-status">
         <span><i></i> CURRENT RELEASE</span>
-        <b>0.1.0-alpha.0</b>
+        <b>0.1.0-alpha.1</b>
         <small>API may change before validation.</small>
       </div>
     </aside>
@@ -97,10 +97,10 @@ const props = [
           </nav>
           <span class="overview-status"><i></i> ALPHA 0.1</span>
         </div>
-        <h1>Ignitron Odontogram</h1>
+        <h1>Ignitron Clinical UI</h1>
         <p>
-          A configurable React component for dental charting with explicit clinical data,
-          predictable interaction states, and no backend dependency.
+          Open-source React components for clinical software with explicit data contracts,
+          predictable interaction states, and no backend dependency—starting with Odontogram.
         </p>
         <div class="hero-actions">
           <a class="button primary" href="#installation">Installation</a>

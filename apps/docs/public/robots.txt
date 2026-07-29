@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://ignitron-medic-ui.pages.dev/sitemap-index.xml

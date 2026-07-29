@@ -22,6 +22,15 @@ const { title, description } = Astro.props;
     <meta property="og:description" content={description} />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <title>{title}</title>
+    <script is:inline>
+      (() => {
+        const stored = localStorage.getItem('ignitron-docs-theme');
+        const theme = stored === 'light' || stored === 'dark'
+          ? stored
+          : window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
   </head>
   <body>
     <header class="topbar">
@@ -39,6 +48,10 @@ const { title, description } = Astro.props;
           GitHub
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg>
         </a>
+        <button class="theme-toggle" type="button" aria-label="Switch color theme">
+          <svg class="theme-sun" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" /></svg>
+          <svg class="theme-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20.5 15.4A8.5 8.5 0 0 1 8.6 3.5 8.5 8.5 0 1 0 20.5 15.4Z" /></svg>
+        </button>
         <button class="menu-toggle" type="button" aria-label="Hide documentation sidebar" aria-expanded="true">
           <span></span><span></span>
         </button>
@@ -49,8 +62,23 @@ const { title, description } = Astro.props;
 
     <script>
       const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+      const themeToggle = document.querySelector<HTMLButtonElement>('.theme-toggle');
       const sidebar = document.querySelector<HTMLElement>('.docs-sidebar');
       const desktop = window.matchMedia('(min-width: 761px)');
+
+      function updateThemeToggle() {
+        const isDark = document.documentElement.dataset.theme === 'dark';
+        themeToggle?.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} theme`);
+      }
+
+      themeToggle?.addEventListener('click', () => {
+        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        localStorage.setItem('ignitron-docs-theme', next);
+        updateThemeToggle();
+      });
+
+      updateThemeToggle();
 
       function sidebarIsOpen() {
         return desktop.matches

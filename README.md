@@ -63,8 +63,10 @@ The package performs no network requests. Authentication, authorization, persist
 
 ## Release status
 
-The initial package version is `0.1.0-alpha.0`. Releases use Changesets and semantic versioning. See [CONTRIBUTING.md](./CONTRIBUTING.md).
+The initial package version is `0.1.0-alpha.0`. Releases use Changesets, semantic
+versioning, and npm trusted publishing. See [CONTRIBUTING.md](./CONTRIBUTING.md)
+and [docs/releasing.md](./docs/releasing.md).
 
 ## License
 
-Currently `UNLICENSED` while the open-core boundary and commercial terms are being decided. Do not publish the npm package until a license has been selected.
+The open-source package is licensed under the [Apache License 2.0](./LICENSE).

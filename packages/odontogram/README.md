@@ -34,3 +34,8 @@ import { formatToothNumber, validateOdontogramValue } from '@ignitrondev/odontog
 ```
 
 See the repository documentation site for interactive examples.
+
+## Status and license
+
+This package is an alpha release and has not completed clinical validation. It is
+licensed under the Apache License 2.0.

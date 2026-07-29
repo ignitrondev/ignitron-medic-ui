@@ -2,7 +2,25 @@
   "name": "@ignitrondev/odontogram",
   "version": "0.1.0-alpha.0",
   "description": "Configurable React odontogram with a framework-independent clinical data model.",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
+  "author": "IgnitronDev",
+  "homepage": "https://ignitron-medic-ui.pages.dev/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ignitrondev/ignitron-medic-ui.git",
+    "directory": "packages/odontogram"
+  },
+  "bugs": {
+    "url": "https://github.com/ignitrondev/ignitron-medic-ui/issues"
+  },
+  "keywords": [
+    "clinical-ui",
+    "dental",
+    "healthcare",
+    "odontogram",
+    "react",
+    "typescript"
+  ],
   "type": "module",
   "sideEffects": [
     "**/*.css"
@@ -26,12 +44,17 @@
   },
   "scripts": {
     "build": "vite build",
+    "prepack": "pnpm build",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
     "react": ">=18 <20"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^7.0.0",

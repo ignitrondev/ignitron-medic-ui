@@ -1,0 +1,55 @@
+name: Publish npm package
+
+on:
+  push:
+    tags:
+      - "odontogram-v*"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.10.0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build
+
+      - name: Verify release tag and select npm dist-tag
+        id: release
+        shell: bash
+        run: |
+          PACKAGE_VERSION="$(node -p "require('./packages/odontogram/package.json').version")"
+          EXPECTED_TAG="odontogram-v${PACKAGE_VERSION}"
+
+          if [[ "${GITHUB_REF_NAME}" != "${EXPECTED_TAG}" ]]; then
+            echo "Expected tag ${EXPECTED_TAG}, received ${GITHUB_REF_NAME}" >&2
+            exit 1
+          fi
+
+          NPM_TAG="latest"
+          if [[ "${PACKAGE_VERSION}" == *-* ]]; then
+            NPM_TAG="${PACKAGE_VERSION#*-}"
+            NPM_TAG="${NPM_TAG%%.*}"
+          fi
+
+          echo "npm-tag=${NPM_TAG}" >> "${GITHUB_OUTPUT}"
+
+      - name: Publish package
+        run: npm publish ./packages/odontogram --access public --tag "${{ steps.release.outputs.npm-tag }}"

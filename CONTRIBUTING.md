@@ -28,3 +28,9 @@ feat(odontogram): add whole-tooth findings
 fix(numbering): correct Universal primary mapping
 docs: document read-only integration
 ```
+
+## Releases
+
+Public package releases are published to npm from a signed Git tag through GitHub
+Actions. See [docs/releasing.md](./docs/releasing.md) for the bootstrap and release
+checklist. Never add an npm write token to the repository.

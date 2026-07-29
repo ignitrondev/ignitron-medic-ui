@@ -39,7 +39,7 @@ const { title, description } = Astro.props;
           GitHub
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg>
         </a>
-        <button class="menu-toggle" type="button" aria-label="Toggle documentation menu" aria-expanded="false">
+        <button class="menu-toggle" type="button" aria-label="Hide documentation sidebar" aria-expanded="true">
           <span></span><span></span>
         </button>
       </div>
@@ -50,18 +50,75 @@ const { title, description } = Astro.props;
     <script>
       const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
       const sidebar = document.querySelector<HTMLElement>('.docs-sidebar');
+      const desktop = window.matchMedia('(min-width: 761px)');
+
+      function sidebarIsOpen() {
+        return desktop.matches
+          ? !document.body.classList.contains('sidebar-collapsed')
+          : sidebar?.classList.contains('is-open') ?? false;
+      }
+
+      function updateToggle(open: boolean) {
+        toggle?.setAttribute('aria-expanded', String(open));
+        toggle?.setAttribute('aria-label', `${open ? 'Hide' : 'Show'} documentation sidebar`);
+      }
 
       toggle?.addEventListener('click', () => {
-        const isOpen = sidebar?.classList.toggle('is-open') ?? false;
-        toggle.setAttribute('aria-expanded', String(isOpen));
+        if (desktop.matches) {
+          document.body.classList.toggle('sidebar-collapsed');
+        } else {
+          sidebar?.classList.toggle('is-open');
+        }
+        updateToggle(sidebarIsOpen());
       });
 
-      sidebar?.querySelectorAll('a').forEach((link) => {
+      const navigationLinks = Array.from(sidebar?.querySelectorAll<HTMLAnchorElement>('a[href^="#"]') ?? []);
+      const sections = navigationLinks
+        .map((link) => document.querySelector<HTMLElement>(link.hash))
+        .filter((section): section is HTMLElement => section !== null);
+
+      function setActiveSection(id: string) {
+        navigationLinks.forEach((link) => {
+          const active = link.hash === `#${id}`;
+          link.classList.toggle('active', active);
+          if (active) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        });
+      }
+
+      navigationLinks.forEach((link) => {
         link.addEventListener('click', () => {
-          sidebar.classList.remove('is-open');
-          toggle?.setAttribute('aria-expanded', 'false');
+          setActiveSection(link.hash.slice(1));
+          if (!desktop.matches) {
+            sidebar?.classList.remove('is-open');
+            updateToggle(false);
+          }
         });
       });
+
+      let scrollFrame = 0;
+      function updateActiveFromScroll() {
+        const marker = window.scrollY + window.innerHeight * 0.32;
+        const current = sections.reduce((active, section) => (
+          section.offsetTop <= marker ? section : active
+        ), sections[0]);
+        if (current) setActiveSection(current.id);
+        scrollFrame = 0;
+      }
+
+      window.addEventListener('scroll', () => {
+        if (scrollFrame === 0) scrollFrame = window.requestAnimationFrame(updateActiveFromScroll);
+      }, { passive: true });
+
+      desktop.addEventListener('change', () => {
+        document.body.classList.remove('sidebar-collapsed');
+        sidebar?.classList.remove('is-open');
+        updateToggle(desktop.matches);
+      });
+
+      if (window.location.hash) setActiveSection(window.location.hash.slice(1));
+      else updateActiveFromScroll();
+      updateToggle(desktop.matches);
 
       document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) => {
         button.addEventListener('click', async () => {

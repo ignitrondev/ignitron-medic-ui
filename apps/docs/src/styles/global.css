@@ -158,20 +158,39 @@ pre {
 }
 
 .menu-toggle {
-  display: none;
+  display: grid;
   width: 38px;
   height: 38px;
+  place-content: center;
   border: 1px solid var(--line);
   background: transparent;
   color: var(--text);
+  cursor: pointer;
+  transition: 160ms ease;
 }
 
 .menu-toggle span {
   display: block;
   width: 16px;
   height: 1px;
-  margin: 5px auto;
+  margin: 3px auto;
   background: currentColor;
+  transition: 160ms ease;
+}
+
+.menu-toggle:hover {
+  border-color: var(--line-strong);
+  background: var(--surface-raised);
+}
+
+.menu-toggle[aria-expanded='false'] span:first-child {
+  width: 10px;
+  transform: translateX(-3px);
+}
+
+.menu-toggle[aria-expanded='false'] span:last-child {
+  width: 10px;
+  transform: translateX(3px);
 }
 
 .docs-grid {
@@ -179,6 +198,7 @@ pre {
   grid-template-columns: var(--sidebar) minmax(0, 1fr);
   min-height: 100vh;
   padding-top: var(--topbar);
+  transition: grid-template-columns 220ms ease;
 }
 
 .docs-sidebar {
@@ -195,6 +215,15 @@ pre {
   padding: 30px 18px 24px;
   border-right: 1px solid var(--line);
   background: #0a0a0c;
+  transition: transform 220ms ease;
+}
+
+body.sidebar-collapsed .docs-grid {
+  grid-template-columns: 0 minmax(0, 1fr);
+}
+
+body.sidebar-collapsed .docs-sidebar {
+  transform: translateX(-105%);
 }
 
 .docs-sidebar nav p {
@@ -229,7 +258,11 @@ pre {
 .docs-sidebar nav a.active {
   border-left-color: var(--text);
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.055), transparent);
-  color: var(--text-soft);
+  color: var(--text);
+}
+
+.docs-sidebar nav a.active span {
+  color: var(--muted);
 }
 
 .sidebar-status {
@@ -894,7 +927,6 @@ pre {
   :root { --topbar: 64px; }
   .topbar { padding: 0 18px; }
   .release, .topbar-actions > a { display: none; }
-  .menu-toggle { display: block; }
   .docs-grid { grid-template-columns: 1fr; }
   .docs-sidebar {
     width: min(86vw, 310px);

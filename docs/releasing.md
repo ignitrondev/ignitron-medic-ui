@@ -37,16 +37,45 @@ attach a trusted publisher to the package.
 
 ## Subsequent releases
 
-1. Add a Changeset with the package change.
-2. Run `pnpm version-packages`, review the version and changelog, then commit them.
-3. Create and push a tag matching the package version:
+Releases are driven by `.github/workflows/publish.yml` using `changesets/action`.
+The workflow must keep the filename `publish.yml` because the npm trusted publisher
+is registered for it.
 
-   ```bash
-   git tag odontogram-v0.1.0-alpha.1
-   git push origin odontogram-v0.1.0-alpha.1
-   ```
+1. In your feature PR, run `pnpm changeset` and commit the generated file.
+2. Merge the PR into `main`. The workflow runs the quality checks and opens (or updates)
+   a **chore(release): version packages** PR that bumps the version and changelog.
+3. Review and merge the version PR. The workflow then runs
+   `scripts/publish-odontogram.sh`, which publishes to npm and pushes the
+   `odontogram-v<version>` git tag.
 
-The publish workflow rejects a tag that does not match the version in
-`packages/odontogram/package.json`. Prerelease versions publish under their first
-prerelease identifier (`alpha`, `beta`, or `rc`); stable versions publish under
-`latest`.
+The publish script skips versions that already exist on npm, so re-running the
+workflow is safe. Prerelease versions publish under their first prerelease
+identifier (`alpha`, `beta`, or `rc`); stable versions publish under `latest`.
+
+### Manual release with a git tag
+
+Tags are scoped to the odontogram package (`odontogram-v<version>`). Pushing one is a
+fallback when the automatic run failed or you need a quick hotfix:
+
+```bash
+git tag odontogram-v0.1.0-alpha.2
+git push origin odontogram-v0.1.0-alpha.2
+```
+
+The workflow rejects a tag that does not match the version in
+`packages/odontogram/package.json`, or that points to a commit not on `main`. The tag
+itself must be created after the version bump has been merged to `main`.
+
+### Repository settings required
+
+- Settings → Actions → General → Workflow permissions: enable
+  **Allow GitHub Actions to create and approve pull requests**.
+- If `main` is protected, the version PR must be able to pass the required checks.
+  PRs created with `GITHUB_TOKEN` do not trigger the CI workflow on their own, so
+  either close and reopen the PR to run CI, or use a GitHub App token instead.
+
+### Leaving prerelease mode
+
+The repo is in Changesets prerelease mode (`.changeset/pre.json`, tag `alpha`). To
+move to a stable release, run `pnpm changeset pre exit` and commit the result before
+the next version PR.

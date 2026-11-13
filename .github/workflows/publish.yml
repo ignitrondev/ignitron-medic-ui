@@ -1,19 +1,29 @@
-name: Publish npm package
+name: Release
+
+# Keep this file named `publish.yml`: the npm trusted publisher is registered for it.
 
 on:
   push:
-    tags:
-      - "odontogram-v*"
+    branches: [main]
+    # Manual fallback: tags are scoped to the odontogram package.
+    tags: ["odontogram-v*"]
+
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
   id-token: write
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
         with:
@@ -31,8 +41,9 @@ jobs:
       - run: pnpm test
       - run: pnpm build
 
-      - name: Verify release tag and select npm dist-tag
-        id: release
+      # Tag push (manual fallback): publish the version the tag names.
+      - name: Verify odontogram release tag
+        if: github.ref_type == 'tag'
         shell: bash
         run: |
           PACKAGE_VERSION="$(node -p "require('./packages/odontogram/package.json').version")"
@@ -43,13 +54,27 @@ jobs:
             exit 1
           fi
 
-          NPM_TAG="latest"
-          if [[ "${PACKAGE_VERSION}" == *-* ]]; then
-            NPM_TAG="${PACKAGE_VERSION#*-}"
-            NPM_TAG="${NPM_TAG%%.*}"
+          # Only release commits that are already on main.
+          git fetch origin main
+          if ! git merge-base --is-ancestor "${GITHUB_SHA}" origin/main; then
+            echo "Tag ${GITHUB_REF_NAME} does not point to a commit on main" >&2
+            exit 1
           fi
 
-          echo "npm-tag=${NPM_TAG}" >> "${GITHUB_OUTPUT}"
+      - name: Publish from tag
+        if: github.ref_type == 'tag'
+        run: bash scripts/publish-odontogram.sh
 
-      - name: Publish package
-        run: npm publish ./packages/odontogram --access public --tag "${{ steps.release.outputs.npm-tag }}"
+      # Branch push. With pending changesets: opens/updates the "Version Packages" PR.
+      # With none (the PR was just merged): runs the publish script.
+      - name: Version PR or publish
+        if: github.ref_type == 'branch'
+        uses: changesets/action@v1
+        with:
+          version: pnpm version-packages
+          publish: bash scripts/publish-odontogram.sh
+          commit: "chore(release): version packages"
+          title: "chore(release): version packages"
+          createGithubReleases: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

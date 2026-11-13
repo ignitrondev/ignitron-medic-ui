@@ -1,3 +1,11 @@
+/*
+ * Layer order matches Tailwind's (theme, base, components, utilities) with `ignitron`
+ * between base and components, so Preflight cannot reset the chart and utilities can
+ * still override it. Declared here as well as by the host so it holds in any load order.
+ */
+@layer theme, base, ignitron, components, utilities;
+
+@layer ignitron {
 .ignitron-odontogram {
   --ignitron-bg: #ffffff;
   --ignitron-surface: #f8fafc;
@@ -99,9 +107,9 @@
   min-width: 28px;
   max-width: 42px;
   height: 42px;
-  border: 1.5px solid #94a3b8;
+  border: 1.5px solid var(--ignitron-tooth-border, #94a3b8);
   border-radius: 46% 46% 35% 35%;
-  background: linear-gradient(145deg, #fff, #eef2f7);
+  background: linear-gradient(145deg, var(--ignitron-tooth-bg-start, #fff), var(--ignitron-tooth-bg-end, #eef2f7));
   color: var(--ignitron-tooth-accent, var(--ignitron-text));
   font: 800 13px ui-monospace, monospace;
   transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
@@ -128,4 +136,5 @@
   .ignitron-odontogram__conditions { display: none; }
   .ignitron-odontogram__chart { overflow: visible; }
   .ignitron-odontogram__tooth-shape { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+}
 }

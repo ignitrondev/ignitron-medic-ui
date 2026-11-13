@@ -69,12 +69,13 @@ jobs:
       # With none (the PR was just merged): runs the publish script.
       - name: Version PR or publish
         if: github.ref_type == 'branch'
-        uses: changesets/action@v1
+        # v2 requires @changesets/cli v3; the two must be upgraded together.
+        uses: changesets/action@v2
         with:
-          version: pnpm version-packages
-          publish: bash scripts/publish-odontogram.sh
-          commit: "chore(release): version packages"
-          title: "chore(release): version packages"
-          createGithubReleases: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          version-script: pnpm version-packages
+          publish-script: bash scripts/publish-odontogram.sh
+          commit-message: "chore(release): version packages"
+          pr-title: "chore(release): version packages"
+          create-github-releases: false
+          # The publish script pushes the odontogram-v<version> tag itself.
+          push-git-tags: false

@@ -1,14 +1,4 @@
 {
   "mode": "pre",
-  "tag": "alpha",
-  "initialVersions": {
-    "@ignitrondev/docs": "0.0.0",
-    "@ignitrondev/playground": "0.0.0",
-    "@ignitrondev/odontogram": "0.1.0-alpha.0"
-  },
-  "changesets": [
-    "explicit-heading-weight",
-    "tooth-theme-variables",
-    "trusted-publishing-alpha"
-  ]
+  "tag": "alpha"
 }

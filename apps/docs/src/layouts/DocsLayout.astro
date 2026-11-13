@@ -1,4 +1,5 @@
 ---
+import Dot from '../components/Dot.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -11,7 +12,7 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-pt-25 scroll-smooth bg-space motion-reduce:scroll-auto">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -40,28 +41,53 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
       })();
     </script>
   </head>
-  <body>
-    <header class="topbar">
-      <a class="brand" href="/" aria-label="Ignitron Clinical UI documentation home">
-        <span class="brand-mark"><img src="/images/ignitron.png" alt="" /></span>
-        <span class="brand-copy">
-          <b>Ignitron<span>Dev</span></b>
-          <small>CLINICAL UI / DOCS</small>
+  <body class="min-w-80 bg-space font-sans leading-[1.6] text-ink antialiased">
+    <header
+      class="fixed inset-x-0 top-0 z-100 flex h-(--topbar) items-center justify-between border-b border-line bg-topbar px-[30px] backdrop-blur-[18px] max-desktop:px-[18px]"
+    >
+      <a class="inline-flex items-center gap-3" href="/" aria-label="Ignitron Clinical UI documentation home">
+        <span class="grid size-[38px] place-items-center overflow-hidden bg-ink">
+          <img class="size-[38px] object-cover" src="/images/ignitron.png" alt="" />
+        </span>
+        <span class="flex flex-col leading-[1.1]">
+          <b class="text-[17px] tracking-[-0.025em]">Ignitron<span class="text-muted">Dev</span></b>
+          <small class="mt-[5px] font-mono text-[8px] leading-natural font-medium tracking-[0.16em] text-dim">CLINICAL UI / DOCS</small>
         </span>
       </a>
 
-      <div class="topbar-actions">
-        <span class="release"><i></i> ALPHA 0.1</span>
-        <a href="https://github.com/ignitrondev/ignitron-medic-ui" target="_blank" rel="noreferrer">
+      <div class="flex items-center gap-[22px]">
+        <span
+          class="inline-flex items-center gap-2 border border-line px-2.5 py-[7px] font-mono text-[10px] leading-natural font-medium tracking-[0.08em] text-muted max-desktop:hidden"
+        >
+          <Dot /> ALPHA 0.1
+        </span>
+        <a
+          class="inline-flex items-center gap-2 font-mono text-[10px] leading-natural font-medium tracking-[0.08em] text-muted hover:text-ink max-desktop:hidden"
+          href="https://github.com/ignitrondev/ignitron-medic-ui"
+          target="_blank"
+          rel="noreferrer"
+        >
           GitHub
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg>
+          <svg class="w-[15px] fill-none stroke-current stroke-[1.7]" aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg>
         </a>
-        <button class="theme-toggle" type="button" aria-label="Switch color theme">
-          <svg class="theme-sun" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" /></svg>
-          <svg class="theme-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20.5 15.4A8.5 8.5 0 0 1 8.6 3.5 8.5 8.5 0 1 0 20.5 15.4Z" /></svg>
+        <button
+          class="grid size-[38px] place-items-center border border-line bg-transparent text-muted hover:border-line-strong hover:bg-raised hover:text-ink"
+          data-theme-toggle
+          type="button"
+          aria-label="Switch color theme"
+        >
+          <svg class="size-4 fill-none stroke-current stroke-[1.7] in-data-[theme=dark]:hidden" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" /></svg>
+          <svg class="size-4 fill-none stroke-current stroke-[1.7] in-data-[theme=light]:hidden" aria-hidden="true" viewBox="0 0 24 24"><path d="M20.5 15.4A8.5 8.5 0 0 1 8.6 3.5 8.5 8.5 0 1 0 20.5 15.4Z" /></svg>
         </button>
-        <button class="menu-toggle" type="button" aria-label="Hide documentation sidebar" aria-expanded="true">
-          <span></span><span></span>
+        <button
+          class="group grid size-[38px] place-content-center border border-line bg-transparent text-ink transition-all duration-[160ms] hover:border-line-strong hover:bg-raised"
+          data-menu-toggle
+          type="button"
+          aria-label="Hide documentation sidebar"
+          aria-expanded="true"
+        >
+          <span class="mx-auto my-[3px] block h-px w-4 bg-current transition-all duration-[160ms] group-aria-[expanded=false]:w-2.5 group-aria-[expanded=false]:-translate-x-[3px]"></span>
+          <span class="mx-auto my-[3px] block h-px w-4 bg-current transition-all duration-[160ms] group-aria-[expanded=false]:w-2.5 group-aria-[expanded=false]:translate-x-[3px]"></span>
         </button>
       </div>
     </header>
@@ -69,9 +95,9 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
     <slot />
 
     <script>
-      const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
-      const themeToggle = document.querySelector<HTMLButtonElement>('.theme-toggle');
-      const sidebar = document.querySelector<HTMLElement>('.docs-sidebar');
+      const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+      const themeToggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+      const sidebar = document.querySelector<HTMLElement>('[data-sidebar]');
       const desktop = window.matchMedia('(min-width: 761px)');
 
       function updateThemeToggle() {
@@ -118,7 +144,6 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
       function setActiveSection(id: string) {
         navigationLinks.forEach((link) => {
           const active = link.hash === `#${id}`;
-          link.classList.toggle('active', active);
           if (active) {
             link.setAttribute('aria-current', 'location');
             if (breadcrumbGroup) breadcrumbGroup.textContent = link.dataset.breadcrumbGroup ?? '';

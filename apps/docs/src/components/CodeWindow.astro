@@ -1,0 +1,18 @@
+---
+interface Props {
+  title: string;
+  meta: string;
+}
+
+const { title, meta } = Astro.props;
+---
+
+<div class="overflow-hidden border border-line-strong bg-code">
+  <header
+    class="flex min-h-[45px] items-center justify-between border-b border-line px-[17px] font-mono text-[9px] leading-natural font-medium text-dim"
+  >
+    <span>{title}</span><span>{meta}</span>
+  </header>
+  <slot />
+  <slot name="footer" />
+</div>

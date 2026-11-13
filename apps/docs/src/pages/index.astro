@@ -1,4 +1,6 @@
 ---
+import CodeWindow from '../components/CodeWindow.astro';
+import Dot from '../components/Dot.astro';
 import { OdontogramDemo } from '../components/OdontogramDemo';
 import DocsLayout from '../layouts/DocsLayout.astro';
 
@@ -51,26 +53,61 @@ const props = [
   ['dentition', 'PRIMARY | PERMANENT | MIXED', 'PERMANENT', 'Dentition rendered by the chart.'],
   ['mode', 'edit | readOnly | print', 'edit', 'Interaction and output mode.'],
 ];
+
+// Write code blocks as <pre> directly in the page: Astro collapses newlines in slotted text.
+const codeBlock = 'm-0 overflow-x-auto p-8 leading-[1.85] text-code-text';
+
+const requirements = [
+  ['RUNTIME', 'React 18 or 19', 'Distributed as an ESM package with React as a peer dependency.'],
+  ['LANGUAGE', 'TypeScript first', 'Domain models and component contracts ship with generated declarations.'],
+  ['BACKEND', 'Bring your own', 'No hidden persistence, identity provider, or proprietary API requirement.'],
+];
+
+const componentMeta = ['IN DEVELOPMENT', 'REACT', '0.1.0-ALPHA'];
+
+const capabilities = ['FDI numbering', 'Universal numbering', 'Palmer notation', 'Edit / read-only / print'];
+
+const contractPoints = [
+  ['Canonical identity', 'Tooth IDs do not change when the visible numbering convention changes.'],
+  ['Clinical codes', 'Findings persist a condition code, never a presentation color alone.'],
+  ['Versioned schema', 'Stored values declare their contract version for future migrations.'],
+];
 ---
 
 <DocsLayout
   title="Ignitron Clinical UI — React Components for Clinical Software"
   description="Open-source React clinical UI components with explicit data contracts, starting with a configurable odontogram for dental charting."
 >
-  <div class="docs-grid">
-    <aside class="docs-sidebar" aria-label="Documentation navigation">
+  <div
+    class="grid min-h-screen grid-cols-[var(--sidebar)_minmax(0,1fr)] pt-(--topbar) transition-[grid-template-columns] duration-220 in-[.sidebar-collapsed]:grid-cols-[0_minmax(0,1fr)] max-desktop:grid-cols-1"
+  >
+    <aside
+      class="fixed top-(--topbar) bottom-0 left-0 z-60 flex w-(--sidebar) flex-col justify-between overflow-y-auto border-r border-line bg-sidebar px-[18px] pt-[30px] pb-6 transition-transform duration-220 in-[.sidebar-collapsed]:-translate-x-[105%] max-desktop:w-[min(86vw,310px)] max-desktop:-translate-x-[105%] max-desktop:shadow-[30px_0_70px_rgba(0,0,0,0.65)] max-desktop:[&.is-open]:translate-x-0"
+      data-sidebar
+      aria-label="Documentation navigation"
+    >
       <nav>
-        {navigation.map((group) => (
-          <div class="sidebar-group">
-            <p>{group.label}</p>
+        {navigation.map((group, groupIndex) => (
+          <div>
+            <p
+              class:list={[
+                'mx-3 mb-[9px] font-mono text-[9px] leading-natural font-semibold tracking-[0.16em] text-faint',
+                groupIndex === 0 ? 'mt-0' : 'mt-[26px]',
+              ]}
+            >
+              {group.label}
+            </p>
             {group.items.map((item) => (
               <a
-                class:list={{ active: item.id === initialItem.id }}
+                class="group my-0.5 flex items-center gap-[11px] border-l border-transparent px-3 py-[9px] text-[13px] text-dim transition-all duration-150 hover:border-ink hover:bg-linear-to-r hover:from-wash hover:to-transparent hover:text-ink aria-[current=location]:border-ink aria-[current=location]:bg-linear-to-r aria-[current=location]:from-wash aria-[current=location]:to-transparent aria-[current=location]:text-ink"
                 href={`#${item.id}`}
+                aria-current={item.id === initialItem.id ? 'location' : undefined}
                 data-breadcrumb-group={group.label}
                 data-breadcrumb-label={item.label}
               >
-                <span>{String(navigationItems.findIndex(({ id }) => id === item.id) + 1).padStart(2, '0')}</span>
+                <span class="font-mono text-[9px] leading-natural text-faint group-aria-[current=location]:text-muted">
+                  {String(navigationItems.findIndex(({ id }) => id === item.id) + 1).padStart(2, '0')}
+                </span>
                 {item.label}
               </a>
             ))}
@@ -78,162 +115,235 @@ const props = [
         ))}
       </nav>
 
-      <div class="sidebar-status">
-        <span><i></i> CURRENT RELEASE</span>
-        <b>0.1.0-alpha.1</b>
-        <small>API may change before validation.</small>
+      <div class="flex flex-col border border-line bg-surface p-[15px]">
+        <span class="flex items-center gap-[7px] font-mono text-[8px] leading-natural font-medium tracking-[0.1em] text-dim">
+          <Dot /> CURRENT RELEASE
+        </span>
+        <b class="mt-3 font-mono text-[12px] leading-natural font-medium">0.1.0-alpha.1</b>
+        <small class="mt-1 text-[10px] text-faint">API may change before validation.</small>
       </div>
     </aside>
 
-    <main class="docs-content">
-      <section class="docs-hero" id="overview">
-        <div class="overview-meta">
-          <nav class="breadcrumbs" aria-label="Breadcrumb">
-            <ol>
-              <li><a href="/">Docs</a></li>
-              <li data-breadcrumb-group>{initialGroup.label}</li>
-              <li data-breadcrumb-page aria-current="page">{initialItem.label}</li>
+    <main class="col-start-2 min-w-0 max-desktop:col-start-1">
+      <section
+        class="page-x flex min-h-[540px] flex-col justify-center pt-[90px] pb-20 max-desktop:min-h-[500px] max-desktop:pt-[70px] max-desktop:pb-[55px]"
+        id="overview"
+      >
+        <div
+          class="flex items-center justify-between gap-5 border-b border-line pb-[15px] font-mono text-[9px] leading-natural font-medium tracking-[0.1em] text-dim max-desktop:flex-col max-desktop:items-start max-desktop:gap-2"
+        >
+          <nav aria-label="Breadcrumb">
+            <ol class="m-0 flex list-none flex-wrap items-center gap-2 p-0">
+              <li class="inline-flex items-center gap-2">
+                <a class="hover:text-ink" href="/">Docs</a>
+              </li>
+              <li
+                class="inline-flex items-center gap-2 before:text-faint before:content-['/']"
+                data-breadcrumb-group
+              >
+                {initialGroup.label}
+              </li>
+              <li
+                class="inline-flex items-center gap-2 before:text-faint before:content-['/'] aria-[current=page]:text-ink"
+                data-breadcrumb-page
+                aria-current="page"
+              >
+                {initialItem.label}
+              </li>
             </ol>
           </nav>
-          <span class="overview-status"><i></i> ALPHA 0.1</span>
+          <span class="inline-flex items-center gap-[7px] whitespace-nowrap"><Dot glow={false} /> ALPHA 0.1</span>
         </div>
-        <h1>Ignitron Clinical UI</h1>
-        <p>
+        <h1
+          class="mt-6 mb-[18px] max-w-[760px] text-[clamp(44px,6vw,72px)] leading-none font-semibold tracking-[-0.055em] max-desktop:text-[clamp(42px,12vw,62px)]"
+        >
+          Ignitron Clinical UI
+        </h1>
+        <p class="m-0 max-w-[710px] text-[clamp(16px,1.8vw,19px)] leading-[1.75] text-muted">
           Open-source React components for clinical software with explicit data contracts,
           predictable interaction states, and no backend dependency—starting with Odontogram.
         </p>
-        <div class="hero-actions">
-          <a class="button primary" href="#installation">Installation</a>
-          <a class="button secondary" href="#live-demo">Interactive example</a>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a
+            class="inline-flex min-w-[140px] items-center justify-center border border-ink bg-ink px-[18px] py-[11px] text-[13px] font-semibold text-space transition-all duration-[180ms] hover:-translate-y-0.5"
+            href="#installation">Installation</a
+          >
+          <a
+            class="inline-flex min-w-[140px] items-center justify-center border border-line-strong bg-button-secondary px-[18px] py-[11px] text-[13px] font-semibold text-ink-soft transition-all duration-[180ms] hover:-translate-y-0.5"
+            href="#live-demo">Interactive example</a
+          >
         </div>
-        <div class="overview-note">
-          <b>Early development</b>
-          <p>This package has not completed clinical validation. APIs may change before the first stable release.</p>
+        <div
+          class="mt-[46px] grid max-w-[760px] grid-cols-[150px_1fr] gap-5 border-y border-line py-[18px] max-desktop:grid-cols-1 max-desktop:gap-1.5"
+        >
+          <b class="text-[12px]">Early development</b>
+          <p class="m-0 text-[12px] text-dim">This package has not completed clinical validation. APIs may change before the first stable release.</p>
         </div>
       </section>
 
-      <section class="doc-section" id="installation">
-        <header class="section-heading">
-          <span>INSTALLATION</span>
-          <h2>Start with one package.</h2>
-          <p>The package owns rendering and domain values. Your application keeps authentication, storage, audit history, and signatures.</p>
+      <section class="page-x border-t border-line py-[86px] max-desktop:py-[78px]" id="installation">
+        <header class="mb-[42px] max-w-[780px] max-desktop:mb-8">
+          <span class="font-mono text-[10px] leading-natural font-semibold tracking-[0.14em] text-dim">INSTALLATION</span>
+          <h2 class="mt-3 mb-3.5 text-[clamp(35px,4.5vw,58px)] leading-[1.05] font-semibold tracking-[-0.05em]">Start with one package.</h2>
+          <p class="m-0 max-w-[720px] text-base leading-[1.75] text-dim">The package owns rendering and domain values. Your application keeps authentication, storage, audit history, and signatures.</p>
         </header>
 
-        <div class="install-command">
-          <div><i></i><span>TERMINAL</span></div>
-          <code><b>$</b> {installCommand}</code>
-          <button type="button" data-copy={installCommand}>Copy</button>
+        <div
+          class="grid min-h-[72px] grid-cols-[145px_1fr_auto] items-stretch border border-line-strong bg-surface max-desktop:grid-cols-[1fr_auto]"
+        >
+          <div
+            class="flex items-center gap-[9px] border-r border-line px-[18px] font-mono text-[9px] leading-natural font-medium tracking-[0.1em] text-dim max-desktop:hidden"
+          >
+            <Dot /><span>TERMINAL</span>
+          </div>
+          <code class="flex items-center overflow-x-auto px-6 text-[13px] whitespace-nowrap text-ink-soft"><b class="mr-3 text-faint">$</b> {installCommand}</code>
+          <button
+            class="flex items-center justify-center border-0 border-l border-line bg-transparent px-[22px] font-mono text-[10px] leading-natural font-medium text-muted hover:bg-raised hover:text-ink"
+            type="button"
+            data-copy={installCommand}>Copy</button
+          >
         </div>
 
-        <div class="requirements-grid">
-          <article><span>RUNTIME</span><b>React 18 or 19</b><p>Distributed as an ESM package with React as a peer dependency.</p></article>
-          <article><span>LANGUAGE</span><b>TypeScript first</b><p>Domain models and component contracts ship with generated declarations.</p></article>
-          <article><span>BACKEND</span><b>Bring your own</b><p>No hidden persistence, identity provider, or proprietary API requirement.</p></article>
+        <div class="mt-[18px] grid grid-cols-3 border border-line max-wide:grid-cols-1">
+          {requirements.map(([label, title, text]) => (
+            <article class="min-h-[190px] p-[26px] not-first:border-l not-first:border-line max-wide:not-first:border-t max-wide:not-first:border-l-0">
+              <span class="font-mono text-[9px] leading-natural font-medium tracking-[0.12em] text-faint">{label}</span>
+              <b class="mt-[35px] mb-2 block text-[18px]">{title}</b>
+              <p class="m-0 text-[13px] text-dim">{text}</p>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section class="doc-section" id="odontogram">
-        <header class="section-heading split-heading">
+      <section class="page-x border-t border-line py-[86px] max-desktop:py-[78px]" id="odontogram">
+        <header class="mb-[42px] flex max-w-none items-end justify-between gap-10 max-desktop:mb-8 max-desktop:block">
           <div>
             <span>COMPONENT / 01</span>
-            <h2>Odontogram</h2>
+            <h2 class="mt-3 mb-3.5 text-[clamp(35px,4.5vw,58px)] leading-[1.05] font-semibold tracking-[-0.05em]">Odontogram</h2>
           </div>
-          <div class="component-meta">
-            <span><i></i> IN DEVELOPMENT</span>
-            <span>REACT</span>
-            <span>0.1.0-ALPHA</span>
+          <div class="flex flex-wrap justify-end gap-[7px] max-desktop:mt-5 max-desktop:justify-start">
+            {componentMeta.map((label, index) => (
+              <span class="inline-flex items-center gap-[7px] border border-line px-[9px] py-1.5 font-mono text-[8px] leading-natural font-medium tracking-[0.08em] text-dim">
+                {index === 0 && <Dot />}{label}
+              </span>
+            ))}
           </div>
         </header>
 
-        <div class="component-intro">
-          <p>A controlled dental chart for whole-tooth findings across permanent, primary, and mixed dentition.</p>
-          <div>
-            <span>FDI numbering</span><span>Universal numbering</span><span>Palmer notation</span>
-            <span>Edit / read-only / print</span>
+        <div class="mb-[38px] grid grid-cols-[minmax(0,1fr)_minmax(280px,0.8fr)] items-start gap-[60px] max-desktop:grid-cols-1 max-desktop:gap-6">
+          <p class="m-0 text-[18px] leading-[1.7] text-muted">A controlled dental chart for whole-tooth findings across permanent, primary, and mixed dentition.</p>
+          <div class="flex flex-wrap gap-[7px]">
+            {capabilities.map((label) => (
+              <span class="border border-line px-[9px] py-1.5 font-mono text-[9px] leading-natural font-medium text-dim">{label}</span>
+            ))}
           </div>
         </div>
 
-        <div class="code-window">
-          <header><span>Assessment.tsx</span><span>React + TypeScript</span></header>
-          <pre><code><span class="syntax-purple">&lt;Odontogram</span>
-  <span class="syntax-blue">value</span>={'{value}'}
-  <span class="syntax-blue">onChange</span>={'{setValue}'}
-  <span class="syntax-blue">numberingSystem</span>=<span class="syntax-green">"FDI"</span>
-  <span class="syntax-blue">dentition</span>=<span class="syntax-green">"PERMANENT"</span>
-  <span class="syntax-blue">conditions</span>={'{conditions}'}
-<span class="syntax-purple">/&gt;</span></code></pre>
-          <footer><i></i> Value stays in your application</footer>
-        </div>
+        <CodeWindow title="Assessment.tsx" meta="React + TypeScript">
+          <pre class:list={[codeBlock, 'text-[13px]']}><code><span class="text-syntax-purple">&lt;Odontogram</span>
+  <span class="text-syntax-blue">value</span>={'{value}'}
+  <span class="text-syntax-blue">onChange</span>={'{setValue}'}
+  <span class="text-syntax-blue">numberingSystem</span>=<span class="text-syntax-green">"FDI"</span>
+  <span class="text-syntax-blue">dentition</span>=<span class="text-syntax-green">"PERMANENT"</span>
+  <span class="text-syntax-blue">conditions</span>={'{conditions}'}
+<span class="text-syntax-purple">/&gt;</span></code></pre>
+          <footer
+            slot="footer"
+            class="flex min-h-[45px] items-center justify-start gap-2 border-t border-line px-[17px] font-mono text-[9px] leading-natural font-medium text-dim"
+          ><Dot /> Value stays in your application</footer></CodeWindow>
       </section>
 
-      <section class="doc-section demo-section" id="live-demo">
-        <header class="section-heading">
-          <span>INTERACTIVE DEMO</span>
-          <h2>Test the contract, not a screenshot.</h2>
-          <p>Choose a finding, select teeth, switch numbering systems, and inspect the structured value emitted by the component.</p>
+      <section class="page-x border-t border-line bg-surface py-[86px] max-desktop:py-[78px]" id="live-demo">
+        <header class="mb-[42px] max-w-[780px] max-desktop:mb-8">
+          <span class="font-mono text-[10px] leading-natural font-semibold tracking-[0.14em] text-dim">INTERACTIVE DEMO</span>
+          <h2 class="mt-3 mb-3.5 text-[clamp(35px,4.5vw,58px)] leading-[1.05] font-semibold tracking-[-0.05em]">Test the contract, not a screenshot.</h2>
+          <p class="m-0 max-w-[720px] text-base leading-[1.75] text-dim">Choose a finding, select teeth, switch numbering systems, and inspect the structured value emitted by the component.</p>
         </header>
         <OdontogramDemo client:load />
       </section>
 
-      <section class="doc-section" id="api">
-        <header class="section-heading">
-          <span>REACT API</span>
-          <h2>Small surface. Explicit ownership.</h2>
+      <section class="page-x border-t border-line py-[86px] max-desktop:py-[78px]" id="api">
+        <header class="mb-[42px] max-w-[780px] max-desktop:mb-8">
+          <span class="font-mono text-[10px] leading-natural font-semibold tracking-[0.14em] text-dim">REACT API</span>
+          <h2 class="mt-3 mb-3.5 text-[clamp(35px,4.5vw,58px)] leading-[1.05] font-semibold tracking-[-0.05em]">Small surface. Explicit ownership.</h2>
         </header>
 
-        <div class="api-table-wrap">
-          <table class="api-table">
-            <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <div class="overflow-x-auto border border-line">
+          <table class="w-full min-w-[760px] border-collapse text-[12px]">
+            <thead>
+              <tr>
+                {['Prop', 'Type', 'Default', 'Description'].map((heading) => (
+                  <th class="border-b border-line bg-surface px-[18px] py-4 text-left align-top font-mono text-[8px] leading-natural font-medium tracking-[0.1em] text-faint uppercase">{heading}</th>
+                ))}
+              </tr>
+            </thead>
             <tbody>
               {props.map(([name, type, defaultValue, description]) => (
-                <tr><td><code>{name}</code></td><td><code>{type}</code></td><td>{defaultValue}</td><td>{description}</td></tr>
+                <tr class="[&:last-child>td]:border-b-0">
+                  <td class="border-b border-line px-[18px] py-4 text-left align-top text-dim"><code class="text-ink">{name}</code></td>
+                  <td class="border-b border-line px-[18px] py-4 text-left align-top text-dim"><code class="text-type">{type}</code></td>
+                  <td class="border-b border-line px-[18px] py-4 text-left align-top font-mono text-[10px] text-muted">{defaultValue}</td>
+                  <td class="border-b border-line px-[18px] py-4 text-left align-top text-dim">{description}</td>
+                </tr>
               ))}
             </tbody>
           </table>
         </div>
       </section>
 
-      <section class="doc-section" id="data-contract">
-        <header class="section-heading">
-          <span>DATA CONTRACT</span>
-          <h2>The visual is not the record.</h2>
-          <p>Every mark shown in the chart is derived from a serializable clinical value. Colors and paths never become the source of truth.</p>
+      <section class="page-x border-t border-line py-[86px] max-desktop:py-[78px]" id="data-contract">
+        <header class="mb-[42px] max-w-[780px] max-desktop:mb-8">
+          <span class="font-mono text-[10px] leading-natural font-semibold tracking-[0.14em] text-dim">DATA CONTRACT</span>
+          <h2 class="mt-3 mb-3.5 text-[clamp(35px,4.5vw,58px)] leading-[1.05] font-semibold tracking-[-0.05em]">The visual is not the record.</h2>
+          <p class="m-0 max-w-[720px] text-base leading-[1.75] text-dim">Every mark shown in the chart is derived from a serializable clinical value. Colors and paths never become the source of truth.</p>
         </header>
 
-        <div class="contract-grid">
-          <div class="code-window compact">
-            <header><span>OdontogramValue</span><span>schemaVersion: 1</span></header>
-            <pre><code><span class="syntax-purple">type</span> OdontogramValue = {'{'}
-  schemaVersion: <span class="syntax-green">1</span>;
+        <div class="grid grid-cols-[minmax(0,1.15fr)_minmax(300px,0.85fr)] gap-[18px] max-wide:grid-cols-1">
+          <CodeWindow title="OdontogramValue" meta="schemaVersion: 1">
+            <pre class:list={[codeBlock, 'text-[12px]']}><code><span class="text-syntax-purple">type</span> OdontogramValue = {'{'}
+  schemaVersion: <span class="text-syntax-green">1</span>;
   findings: {'{'}
-    id: <span class="syntax-blue">string</span>;
+    id: <span class="text-syntax-blue">string</span>;
     toothId: CanonicalToothId;
-    conditionCode: <span class="syntax-blue">string</span>;
+    conditionCode: <span class="text-syntax-blue">string</span>;
     surface?: ToothSurface;
-    note?: <span class="syntax-blue">string</span>;
+    note?: <span class="text-syntax-blue">string</span>;
   {'}'}[];
 {'}'};</code></pre>
-          </div>
-          <div class="contract-points">
-            <article><b>Canonical identity</b><p>Tooth IDs do not change when the visible numbering convention changes.</p></article>
-            <article><b>Clinical codes</b><p>Findings persist a condition code, never a presentation color alone.</p></article>
-            <article><b>Versioned schema</b><p>Stored values declare their contract version for future migrations.</p></article>
+          </CodeWindow>
+          <div class="border border-line">
+            {contractPoints.map(([title, text]) => (
+              <article class="p-6 not-first:border-t not-first:border-line">
+                <b class="text-[14px]">{title}</b>
+                <p class="mt-[7px] text-[12px] text-dim">{text}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      <section class="doc-section safety-section" id="safety">
-        <div class="safety-index">!</div>
+      <section
+        class="page-x grid grid-cols-[130px_1fr] gap-[42px] border-t border-line bg-surface py-[86px] max-desktop:grid-cols-1 max-desktop:gap-6 max-desktop:py-[78px]"
+        id="safety"
+      >
+        <div
+          class="grid size-[90px] place-items-center border border-line-strong font-mono text-[38px] leading-natural text-muted max-desktop:size-16"
+        >!</div>
         <div>
-          <span>CLINICAL SAFETY</span>
-          <h2>Early software. Human review required.</h2>
-          <p>This alpha package has not completed clinical validation. It is not a medical device and must not replace clinical review, organizational policy, or integration testing.</p>
+          <span class="font-mono text-[10px] leading-natural font-semibold tracking-[0.14em] text-dim">CLINICAL SAFETY</span>
+          <h2 class="mt-2.5 mb-3.5 text-[clamp(30px,4vw,48px)] leading-[1.08] font-bold tracking-[-0.045em]">Early software. Human review required.</h2>
+          <p class="m-0 max-w-[750px] text-dim">This alpha package has not completed clinical validation. It is not a medical device and must not replace clinical review, organizational policy, or integration testing.</p>
         </div>
       </section>
 
-      <footer class="docs-footer">
-        <div><b>Ignitron<span>Dev</span></b><small>Clinical UI infrastructure</small></div>
-        <p>Built for safer clinical software · 2026</p>
+      <footer
+        class="page-x flex min-h-[150px] items-center justify-between gap-[30px] border-t border-line max-desktop:min-h-[180px] max-desktop:flex-col max-desktop:items-start max-desktop:justify-center"
+      >
+        <div class="flex flex-col">
+          <b class="text-[17px]">Ignitron<span class="text-muted">Dev</span></b>
+          <small class="mt-1 font-mono text-[9px] leading-natural font-medium text-faint">Clinical UI infrastructure</small>
+        </div>
+        <p class="m-0 mt-1 font-mono text-[9px] leading-natural font-medium text-faint">Built for safer clinical software · 2026</p>
       </footer>
     </main>
   </div>

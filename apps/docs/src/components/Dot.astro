@@ -1,0 +1,14 @@
+---
+interface Props {
+  glow?: boolean;
+}
+
+const { glow = true } = Astro.props;
+---
+
+<i
+  class:list={[
+    'block size-1.5 shrink-0 rounded-full bg-success',
+    glow && 'shadow-[0_0_8px_rgba(74,222,128,0.55)]',
+  ]}
+></i>

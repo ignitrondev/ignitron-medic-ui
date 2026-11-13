@@ -40,6 +40,13 @@ const initialValue: OdontogramValue = {
   ],
 };
 
+const toolbarLabel =
+  'grid min-h-[60px] grid-cols-[auto_1fr] items-center gap-3 border-r border-line px-4 max-desktop:border-r-0 max-desktop:border-b';
+const toolbarCaption =
+  'font-mono text-[8px] leading-natural font-medium tracking-[0.08em] text-dim uppercase';
+const toolbarSelect =
+  'min-w-0 border-0 bg-space font-mono text-[10px] leading-natural font-medium text-ink-soft uppercase outline-0';
+
 export function OdontogramDemo() {
   const [value, setValue] = useState<OdontogramValue>(initialValue);
   const [numberingSystem, setNumberingSystem] = useState<ToothNumberingSystem>('FDI');
@@ -47,11 +54,15 @@ export function OdontogramDemo() {
   const [mode, setMode] = useState<OdontogramMode>('edit');
 
   return (
-    <div className="demo-shell">
-      <div className="demo-toolbar" aria-label="Odontogram demo controls">
-        <label>
-          <span>Numbering</span>
+    <div className="w-full border border-line-strong bg-space">
+      <div
+        className="grid grid-cols-[repeat(3,minmax(135px,1fr))_auto] border-b border-line max-wide:grid-cols-3 max-desktop:grid-cols-1"
+        aria-label="Odontogram demo controls"
+      >
+        <label className={toolbarLabel}>
+          <span className={toolbarCaption}>Numbering</span>
           <select
+            className={toolbarSelect}
             value={numberingSystem}
             onChange={(event) => setNumberingSystem(event.target.value as ToothNumberingSystem)}
           >
@@ -61,9 +72,10 @@ export function OdontogramDemo() {
           </select>
         </label>
 
-        <label>
-          <span>Dentition</span>
+        <label className={toolbarLabel}>
+          <span className={toolbarCaption}>Dentition</span>
           <select
+            className={toolbarSelect}
             value={dentition}
             onChange={(event) => setDentition(event.target.value as Dentition)}
           >
@@ -73,9 +85,10 @@ export function OdontogramDemo() {
           </select>
         </label>
 
-        <label>
-          <span>Mode</span>
+        <label className={toolbarLabel}>
+          <span className={toolbarCaption}>Mode</span>
           <select
+            className={toolbarSelect}
             value={mode}
             onChange={(event) => setMode(event.target.value as OdontogramMode)}
           >
@@ -85,12 +98,17 @@ export function OdontogramDemo() {
           </select>
         </label>
 
-        <button type="button" onClick={() => setValue(createEmptyOdontogramValue())}>
+        <button
+          className="cursor-pointer border-0 bg-raised px-[18px] font-mono text-[9px] leading-natural font-medium text-muted uppercase hover:bg-ink hover:text-space max-wide:col-span-3 max-wide:min-h-12 max-wide:border-t max-wide:border-line max-desktop:col-span-1 max-desktop:border-t-0"
+          type="button"
+          onClick={() => setValue(createEmptyOdontogramValue())}
+        >
           Clear findings
         </button>
       </div>
 
-      <div className="docs-live-demo">
+      {/* `docs-live-demo` is the hook for theming the package's own classes in global.css. */}
+      <div className="docs-live-demo p-6 max-desktop:p-2.5">
         <Odontogram
           className="docs-odontogram"
           value={value}
@@ -102,12 +120,14 @@ export function OdontogramDemo() {
         />
       </div>
 
-      <div className="demo-output">
-        <div>
+      <div className="grid h-[280px] min-h-0 grid-cols-[160px_minmax(0,1fr)] grid-rows-[minmax(0,1fr)] overflow-hidden border-t border-line bg-code max-desktop:h-[320px] max-desktop:grid-cols-1 max-desktop:grid-rows-[auto_minmax(0,1fr)]">
+        <div className="flex flex-col gap-[7px] border-r border-line p-5 font-mono text-[8px] leading-natural font-medium tracking-[0.1em] text-faint max-desktop:flex-row max-desktop:justify-between max-desktop:border-r-0 max-desktop:border-b">
           <span>LIVE VALUE</span>
-          <span>{value.findings.length} findings</span>
+          <span className="tracking-normal text-muted">{value.findings.length} findings</span>
         </div>
-        <pre><code>{JSON.stringify(value, null, 2)}</code></pre>
+        <pre className="m-0 min-h-0 min-w-0 overflow-auto px-6 py-5 text-[11px] leading-[1.65] text-code-text">
+          <code>{JSON.stringify(value, null, 2)}</code>
+        </pre>
       </div>
     </div>
   );

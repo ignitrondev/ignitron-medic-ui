@@ -54,6 +54,13 @@ const props = [
   ['mode', 'edit | readOnly | print', 'edit', 'Interaction and output mode.'],
 ];
 
+const gutter = 'px-[clamp(32px,4.5vw,72px)] max-wide:px-[45px] max-desktop:px-[22px]';
+const section = 'border-t border-line py-[86px] max-desktop:py-[78px]';
+const sectionHeader = 'mb-[42px] max-w-[780px] max-desktop:mb-8';
+const eyebrow = 'font-mono text-[10px] leading-natural font-semibold tracking-[0.14em] text-dim';
+const sectionTitle = 'mt-3 mb-3.5 text-[clamp(35px,4.5vw,58px)] leading-[1.05] font-semibold tracking-[-0.05em]';
+const sectionLead = 'm-0 max-w-[720px] text-base leading-[1.75] text-dim';
+
 // Write code blocks as <pre> directly in the page: Astro collapses newlines in slotted text.
 const codeBlock = 'm-0 overflow-x-auto p-8 leading-[1.85] text-code-text';
 
@@ -126,7 +133,7 @@ const contractPoints = [
 
     <main class="col-start-2 min-w-0 max-desktop:col-start-1">
       <section
-        class="page-x flex min-h-[540px] flex-col justify-center pt-[90px] pb-20 max-desktop:min-h-[500px] max-desktop:pt-[70px] max-desktop:pb-[55px]"
+        class:list={[gutter, 'flex min-h-[540px] flex-col justify-center pt-[90px] pb-20 max-desktop:min-h-[500px] max-desktop:pt-[70px] max-desktop:pb-[55px]']}
         id="overview"
       >
         <div
@@ -181,11 +188,11 @@ const contractPoints = [
         </div>
       </section>
 
-      <section class="page-x border-t border-line py-[86px] max-desktop:py-[78px]" id="installation">
-        <header class="mb-[42px] max-w-[780px] max-desktop:mb-8">
-          <span class="font-mono text-[10px] leading-natural font-semibold tracking-[0.14em] text-dim">INSTALLATION</span>
-          <h2 class="mt-3 mb-3.5 text-[clamp(35px,4.5vw,58px)] leading-[1.05] font-semibold tracking-[-0.05em]">Start with one package.</h2>
-          <p class="m-0 max-w-[720px] text-base leading-[1.75] text-dim">The package owns rendering and domain values. Your application keeps authentication, storage, audit history, and signatures.</p>
+      <section class:list={[gutter, section]} id="installation">
+        <header class={sectionHeader}>
+          <span class={eyebrow}>INSTALLATION</span>
+          <h2 class={sectionTitle}>Start with one package.</h2>
+          <p class={sectionLead}>The package owns rendering and domain values. Your application keeps authentication, storage, audit history, and signatures.</p>
         </header>
 
         <div
@@ -198,7 +205,7 @@ const contractPoints = [
           </div>
           <code class="flex items-center overflow-x-auto px-6 text-[13px] whitespace-nowrap text-ink-soft"><b class="mr-3 text-faint">$</b> {installCommand}</code>
           <button
-            class="flex items-center justify-center border-0 border-l border-line bg-transparent px-[22px] font-mono text-[10px] leading-natural font-medium text-muted hover:bg-raised hover:text-ink"
+            class="flex cursor-pointer items-center justify-center border-0 border-l border-line bg-transparent px-[22px] font-mono text-[10px] leading-natural font-medium text-muted hover:bg-raised hover:text-ink"
             type="button"
             data-copy={installCommand}>Copy</button
           >
@@ -215,11 +222,11 @@ const contractPoints = [
         </div>
       </section>
 
-      <section class="page-x border-t border-line py-[86px] max-desktop:py-[78px]" id="odontogram">
+      <section class:list={[gutter, section]} id="odontogram">
         <header class="mb-[42px] flex max-w-none items-end justify-between gap-10 max-desktop:mb-8 max-desktop:block">
           <div>
             <span>COMPONENT / 01</span>
-            <h2 class="mt-3 mb-3.5 text-[clamp(35px,4.5vw,58px)] leading-[1.05] font-semibold tracking-[-0.05em]">Odontogram</h2>
+            <h2 class={sectionTitle}>Odontogram</h2>
           </div>
           <div class="flex flex-wrap justify-end gap-[7px] max-desktop:mt-5 max-desktop:justify-start">
             {componentMeta.map((label, index) => (
@@ -253,19 +260,19 @@ const contractPoints = [
           ><Dot /> Value stays in your application</footer></CodeWindow>
       </section>
 
-      <section class="page-x border-t border-line bg-surface py-[86px] max-desktop:py-[78px]" id="live-demo">
-        <header class="mb-[42px] max-w-[780px] max-desktop:mb-8">
-          <span class="font-mono text-[10px] leading-natural font-semibold tracking-[0.14em] text-dim">INTERACTIVE DEMO</span>
-          <h2 class="mt-3 mb-3.5 text-[clamp(35px,4.5vw,58px)] leading-[1.05] font-semibold tracking-[-0.05em]">Test the contract, not a screenshot.</h2>
-          <p class="m-0 max-w-[720px] text-base leading-[1.75] text-dim">Choose a finding, select teeth, switch numbering systems, and inspect the structured value emitted by the component.</p>
+      <section class:list={[gutter, 'border-t border-line bg-surface py-[86px] max-desktop:py-[78px]']} id="live-demo">
+        <header class={sectionHeader}>
+          <span class={eyebrow}>INTERACTIVE DEMO</span>
+          <h2 class={sectionTitle}>Test the contract, not a screenshot.</h2>
+          <p class={sectionLead}>Choose a finding, select teeth, switch numbering systems, and inspect the structured value emitted by the component.</p>
         </header>
         <OdontogramDemo client:load />
       </section>
 
-      <section class="page-x border-t border-line py-[86px] max-desktop:py-[78px]" id="api">
-        <header class="mb-[42px] max-w-[780px] max-desktop:mb-8">
-          <span class="font-mono text-[10px] leading-natural font-semibold tracking-[0.14em] text-dim">REACT API</span>
-          <h2 class="mt-3 mb-3.5 text-[clamp(35px,4.5vw,58px)] leading-[1.05] font-semibold tracking-[-0.05em]">Small surface. Explicit ownership.</h2>
+      <section class:list={[gutter, section]} id="api">
+        <header class={sectionHeader}>
+          <span class={eyebrow}>REACT API</span>
+          <h2 class={sectionTitle}>Small surface. Explicit ownership.</h2>
         </header>
 
         <div class="overflow-x-auto border border-line">
@@ -291,11 +298,11 @@ const contractPoints = [
         </div>
       </section>
 
-      <section class="page-x border-t border-line py-[86px] max-desktop:py-[78px]" id="data-contract">
-        <header class="mb-[42px] max-w-[780px] max-desktop:mb-8">
-          <span class="font-mono text-[10px] leading-natural font-semibold tracking-[0.14em] text-dim">DATA CONTRACT</span>
-          <h2 class="mt-3 mb-3.5 text-[clamp(35px,4.5vw,58px)] leading-[1.05] font-semibold tracking-[-0.05em]">The visual is not the record.</h2>
-          <p class="m-0 max-w-[720px] text-base leading-[1.75] text-dim">Every mark shown in the chart is derived from a serializable clinical value. Colors and paths never become the source of truth.</p>
+      <section class:list={[gutter, section]} id="data-contract">
+        <header class={sectionHeader}>
+          <span class={eyebrow}>DATA CONTRACT</span>
+          <h2 class={sectionTitle}>The visual is not the record.</h2>
+          <p class={sectionLead}>Every mark shown in the chart is derived from a serializable clinical value. Colors and paths never become the source of truth.</p>
         </header>
 
         <div class="grid grid-cols-[minmax(0,1.15fr)_minmax(300px,0.85fr)] gap-[18px] max-wide:grid-cols-1">
@@ -323,21 +330,21 @@ const contractPoints = [
       </section>
 
       <section
-        class="page-x grid grid-cols-[130px_1fr] gap-[42px] border-t border-line bg-surface py-[86px] max-desktop:grid-cols-1 max-desktop:gap-6 max-desktop:py-[78px]"
+        class:list={[gutter, 'grid grid-cols-[130px_1fr] gap-[42px] border-t border-line bg-surface py-[86px] max-desktop:grid-cols-1 max-desktop:gap-6 max-desktop:py-[78px]']}
         id="safety"
       >
         <div
           class="grid size-[90px] place-items-center border border-line-strong font-mono text-[38px] leading-natural text-muted max-desktop:size-16"
         >!</div>
         <div>
-          <span class="font-mono text-[10px] leading-natural font-semibold tracking-[0.14em] text-dim">CLINICAL SAFETY</span>
+          <span class={eyebrow}>CLINICAL SAFETY</span>
           <h2 class="mt-2.5 mb-3.5 text-[clamp(30px,4vw,48px)] leading-[1.08] font-bold tracking-[-0.045em]">Early software. Human review required.</h2>
           <p class="m-0 max-w-[750px] text-dim">This alpha package has not completed clinical validation. It is not a medical device and must not replace clinical review, organizational policy, or integration testing.</p>
         </div>
       </section>
 
       <footer
-        class="page-x flex min-h-[150px] items-center justify-between gap-[30px] border-t border-line max-desktop:min-h-[180px] max-desktop:flex-col max-desktop:items-start max-desktop:justify-center"
+        class:list={[gutter, 'flex min-h-[150px] items-center justify-between gap-[30px] border-t border-line max-desktop:min-h-[180px] max-desktop:flex-col max-desktop:items-start max-desktop:justify-center']}
       >
         <div class="flex flex-col">
           <b class="text-[17px]">Ignitron<span class="text-muted">Dev</span></b>

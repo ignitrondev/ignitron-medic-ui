@@ -8,11 +8,40 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+
+// Light-theme token overrides, applied when the inline script sets data-theme="light".
+const lightTheme = [
+  'data-[theme=light]:scheme-light',
+  'data-[theme=light]:[--color-space:#ffffff]',
+  'data-[theme=light]:[--color-surface:#fafafa]',
+  'data-[theme=light]:[--color-raised:#f4f4f5]',
+  'data-[theme=light]:[--color-line:#e4e4e7]',
+  'data-[theme=light]:[--color-line-strong:#d4d4d8]',
+  'data-[theme=light]:[--color-ink:#18181b]',
+  'data-[theme=light]:[--color-ink-soft:#27272a]',
+  'data-[theme=light]:[--color-muted:#52525b]',
+  'data-[theme=light]:[--color-faint:#a1a1aa]',
+  'data-[theme=light]:[--color-topbar:rgba(255,255,255,0.9)]',
+  'data-[theme=light]:[--color-sidebar:#fafafa]',
+  'data-[theme=light]:[--color-wash:rgba(0,0,0,0.045)]',
+  'data-[theme=light]:[--color-code:#18181b]',
+  'data-[theme=light]:[--color-button-secondary:#fafafa]',
+  'data-[theme=light]:[--color-type:#4f46e5]',
+  'data-[theme=light]:[--color-tooth-start:#ffffff]',
+  'data-[theme=light]:[--color-tooth-end:#f4f4f5]',
+];
 const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astro.url;
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-pt-25 scroll-smooth bg-space motion-reduce:scroll-auto">
+<html
+  lang="en"
+  class:list={[
+    'scheme-dark scroll-pt-25 scroll-smooth bg-space motion-reduce:scroll-auto',
+    '[--topbar:72px] max-desktop:[--topbar:64px] [--sidebar:252px] max-wide:[--sidebar:220px]',
+    lightTheme,
+  ]}
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -30,6 +59,12 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
     <link rel="canonical" href={canonicalURL} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
     <title>{title}</title>
     <script is:inline>
       (() => {
@@ -41,7 +76,7 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
       })();
     </script>
   </head>
-  <body class="min-w-80 bg-space font-sans leading-[1.6] text-ink antialiased">
+  <body class="min-w-80 bg-space font-sans leading-[1.6] text-ink antialiased motion-reduce:**:transition-none!">
     <header
       class="fixed inset-x-0 top-0 z-100 flex h-(--topbar) items-center justify-between border-b border-line bg-topbar px-[30px] backdrop-blur-[18px] max-desktop:px-[18px]"
     >
@@ -71,7 +106,7 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
           <svg class="w-[15px] fill-none stroke-current stroke-[1.7]" aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10" /></svg>
         </a>
         <button
-          class="grid size-[38px] place-items-center border border-line bg-transparent text-muted hover:border-line-strong hover:bg-raised hover:text-ink"
+          class="grid size-[38px] cursor-pointer place-items-center border border-line bg-transparent text-muted hover:border-line-strong hover:bg-raised hover:text-ink"
           data-theme-toggle
           type="button"
           aria-label="Switch color theme"
@@ -80,7 +115,7 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
           <svg class="size-4 fill-none stroke-current stroke-[1.7] in-data-[theme=light]:hidden" aria-hidden="true" viewBox="0 0 24 24"><path d="M20.5 15.4A8.5 8.5 0 0 1 8.6 3.5 8.5 8.5 0 1 0 20.5 15.4Z" /></svg>
         </button>
         <button
-          class="group grid size-[38px] place-content-center border border-line bg-transparent text-ink transition-all duration-[160ms] hover:border-line-strong hover:bg-raised"
+          class="group grid size-[38px] cursor-pointer place-content-center border border-line bg-transparent text-ink transition-all duration-[160ms] hover:border-line-strong hover:bg-raised"
           data-menu-toggle
           type="button"
           aria-label="Hide documentation sidebar"

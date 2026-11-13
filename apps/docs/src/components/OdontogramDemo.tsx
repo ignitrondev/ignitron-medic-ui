@@ -47,6 +47,24 @@ const toolbarCaption =
 const toolbarSelect =
   'min-w-0 border-0 bg-space font-mono text-[10px] leading-natural font-medium text-ink-soft uppercase outline-0';
 
+// The package CSS lives in `@layer ignitron`, which global.css orders below `utilities`,
+// so plain utilities override it without `!`.
+const odontogramTheme = [
+  'rounded-none font-sans',
+  '[--ignitron-bg:var(--color-surface)]',
+  '[--ignitron-surface:var(--color-raised)]',
+  '[--ignitron-text:var(--color-ink)]',
+  '[--ignitron-muted:var(--color-dim)]',
+  '[--ignitron-border:var(--color-line)]',
+  '[--ignitron-focus:var(--color-ink)]',
+  '[--ignitron-tooth-border:var(--color-faint)]',
+  '[--ignitron-tooth-bg-start:var(--color-tooth-start)]',
+  '[--ignitron-tooth-bg-end:var(--color-tooth-end)]',
+  String.raw`[&_.ignitron-odontogram\_\_conditions_button]:rounded-[2px]`,
+  String.raw`[&_.ignitron-odontogram\_\_meta_span]:rounded-[2px]`,
+  String.raw`[&_.ignitron-odontogram\_\_legend_i]:rounded-[2px]`,
+].join(' ');
+
 export function OdontogramDemo() {
   const [value, setValue] = useState<OdontogramValue>(initialValue);
   const [numberingSystem, setNumberingSystem] = useState<ToothNumberingSystem>('FDI');
@@ -107,10 +125,9 @@ export function OdontogramDemo() {
         </button>
       </div>
 
-      {/* `docs-live-demo` is the hook for theming the package's own classes in global.css. */}
-      <div className="docs-live-demo p-6 max-desktop:p-2.5">
+      <div className="p-6 max-desktop:p-2.5">
         <Odontogram
-          className="docs-odontogram"
+          className={odontogramTheme}
           value={value}
           onChange={setValue}
           conditions={conditions}

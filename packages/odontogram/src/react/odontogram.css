@@ -37,7 +37,7 @@
   text-transform: uppercase;
 }
 
-.ignitron-odontogram h2 { margin: 0; font-size: 24px; line-height: 1.2; }
+.ignitron-odontogram h2 { margin: 0; font-size: 24px; font-weight: 700; line-height: 1.2; }
 
 .ignitron-odontogram__meta { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
 .ignitron-odontogram__meta span {
@@ -53,7 +53,7 @@
 .ignitron-odontogram__errors ul { margin: 6px 0 0; padding-left: 20px; }
 
 .ignitron-odontogram__conditions { margin: 0; padding: 18px 24px; border: 0; border-bottom: 1px solid var(--ignitron-border); background: var(--ignitron-surface); }
-.ignitron-odontogram__conditions legend { float: left; width: 100%; margin-bottom: 10px; color: var(--ignitron-muted); font-size: 12px; font-weight: 700; }
+.ignitron-odontogram__conditions legend { float: left; width: 100%; margin-bottom: 10px; padding: 0 2px; color: var(--ignitron-muted); font-size: 12px; font-weight: 700; }
 .ignitron-odontogram__conditions > div { clear: both; display: flex; flex-wrap: wrap; gap: 8px; }
 .ignitron-odontogram__conditions button {
   display: inline-flex;
@@ -74,7 +74,7 @@
 
 .ignitron-odontogram__chart { padding: 26px 18px; overflow-x: auto; }
 .ignitron-odontogram__dentition + .ignitron-odontogram__dentition { margin-top: 34px; padding-top: 24px; border-top: 1px dashed var(--ignitron-border); }
-.ignitron-odontogram__dentition h3 { margin: 0 0 14px; text-align: center; color: var(--ignitron-muted); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+.ignitron-odontogram__dentition h3 { margin: 0 0 14px; text-align: center; color: var(--ignitron-muted); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
 .ignitron-odontogram__arch { display: grid; grid-template-columns: repeat(16, minmax(32px, 1fr)); gap: 5px; min-width: 690px; align-items: end; }
 .ignitron-odontogram__arch[data-arch='mandibular'] { align-items: start; }
 .ignitron-odontogram__tooth {

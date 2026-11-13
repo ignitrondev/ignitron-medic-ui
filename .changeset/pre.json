@@ -8,6 +8,7 @@
   },
   "changesets": [
     "explicit-heading-weight",
+    "readme-styling-docs",
     "tooth-theme-variables",
     "trusted-publishing-alpha"
   ]

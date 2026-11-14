@@ -76,6 +76,14 @@ itself must be created after the version bump has been merged to `main`.
 
 ### Leaving prerelease mode
 
-The repo is in Changesets prerelease mode (`.changeset/pre.json`, tag `alpha`). To
-move to a stable release, run `pnpm changeset pre exit` and commit the result before
-the next version PR.
+The repo is in Changesets prerelease mode (`.changeset/pre.json`, tag `alpha`).
+Changesets that were already released as a prerelease are kept in `.changeset/pre/`
+until the stable release; edit or delete them there if they should not appear in the
+stable changelog. To move to a stable release, run `pnpm changeset pre exit` and
+commit the result before the next version PR.
+
+### Tooling versions
+
+The workflow uses `changesets/action@v2`, which only works with `@changesets/cli` v3.
+Upgrade or downgrade the two together: `changesets/action@v1` cannot read the
+`.changeset/pre/` folder, and `v2` refuses to run with CLI v2.

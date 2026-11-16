@@ -1,6 +1,6 @@
 {
   "name": "@ignitrondev/odontogram",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "description": "Configurable React odontogram with a framework-independent clinical data model.",
   "license": "Apache-2.0",
   "author": "IgnitronDev",

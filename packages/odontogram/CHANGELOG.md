@@ -1,5 +1,11 @@
 # @ignitrondev/odontogram
 
+## 0.1.0-alpha.3
+
+### Patch Changes
+
+- d8a561e: Document the `ignitron` cascade layer, the `--ignitron-*` theme variables, and the layer order Tailwind CSS v4 hosts need in the README.
+
 ## 0.1.0-alpha.2
 
 ### Minor Changes
